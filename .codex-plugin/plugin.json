@@ -1,0 +1,20 @@
+{
+  "name": "rulewright",
+  "version": "0.1.0",
+  "description": "Session-first rules doctor for Codex agent runs.",
+  "author": {
+    "name": "jdeploys"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Rulewright",
+    "shortDescription": "Turn failed Codex sessions into durable rules.",
+    "longDescription": "Rulewright reads Codex thread history, identifies agent-behavior correction events, and proposes narrow patches for AGENTS.md, CLAUDE.md, Cursor, or Copilot instruction files.",
+    "developerName": "jdeploys",
+    "category": "Productivity",
+    "capabilities": [
+      "skills"
+    ],
+    "defaultPrompt": "Use Rulewright to analyze a Codex session and propose a project-rule patch."
+  }
+}

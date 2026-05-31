@@ -1,0 +1,14 @@
+---
+description: Use Rulewright to turn failed agent sessions into durable project instructions
+alwaysApply: true
+---
+
+# Rulewright
+
+Use Rulewright when a user wants to learn from failed agent sessions, repeated corrections, or unsatisfactory AI behavior.
+
+- Treat the failed session as a postmortem, not as a generic prompt-improvement task.
+- Identify the exact agent behavior the user rejected or corrected.
+- Propose narrow patches for project instruction files such as AGENTS.md, CLAUDE.md, .cursor/rules, or .github/copilot-instructions.md.
+- Preserve existing stronger rules and avoid broad rewrites unless the user explicitly asks.
+- Prefer evidence-backed diffs over silent edits.

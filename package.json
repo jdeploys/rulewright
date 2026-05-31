@@ -6,6 +6,8 @@
   "scripts": {
     "install:claude": "node scripts/install-claude-skill.mjs",
     "install:codex": "node scripts/install-codex-plugin.mjs",
+    "install:copilot": "node scripts/install-copilot-instructions.mjs",
+    "install:cursor": "node scripts/install-cursor-rule.mjs",
     "test": "node --test scripts/*.test.mjs"
   }
 }

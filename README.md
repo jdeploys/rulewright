@@ -73,6 +73,32 @@ After installing, start a fresh Claude Code session and ask it to use
 `rulewright` to analyze a failed agent session or improve your project
 instructions.
 
+## Install In Cursor Or GitHub Copilot
+
+Cursor and GitHub Copilot use repository instruction files, so pass the target
+project path when installing:
+
+```bash
+git clone https://github.com/jdeploys/rulewright.git
+cd rulewright
+npm run install:cursor -- /path/to/your/project
+npm run install:copilot -- /path/to/your/project
+```
+
+Cursor installs:
+
+```text
+/path/to/your/project/.cursor/rules/rulewright.mdc
+```
+
+GitHub Copilot installs or updates the Rulewright block in:
+
+```text
+/path/to/your/project/.github/copilot-instructions.md
+```
+
+If you omit the path, the installers target the current working directory.
+
 ## What It Does
 
 - Reads a Codex thread or session selected by the user.

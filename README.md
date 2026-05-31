@@ -47,6 +47,32 @@ git pull
 npm run install:codex
 ```
 
+## Install In Claude Code
+
+Clone the repo, then run the Claude Code skill installer:
+
+```bash
+git clone https://github.com/jdeploys/rulewright.git
+cd rulewright
+npm run install:claude
+```
+
+The installer copies the Rulewright skill to:
+
+```text
+~/.claude/skills/rulewright
+```
+
+On Windows, that path lives under your user profile:
+
+```text
+C:\Users\<you>\.claude\skills\rulewright
+```
+
+After installing, start a fresh Claude Code session and ask it to use
+`rulewright` to analyze a failed agent session or improve your project
+instructions.
+
 ## What It Does
 
 - Reads a Codex thread or session selected by the user.

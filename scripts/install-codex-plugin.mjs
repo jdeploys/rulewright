@@ -52,10 +52,12 @@ export function createOrUpdateMarketplace(existingMarketplace) {
 
 export function getDefaultPaths({ homeDir = os.homedir(), repoRoot = getRepoRoot() } = {}) {
   const marketplaceRoot = path.join(homeDir, '.agents', 'plugins');
+  const pluginVersion = '0.1.0';
   return {
     marketplaceRoot,
-    marketplacePath: path.join(marketplaceRoot, 'marketplace.json'),
+    marketplacePath: path.join(marketplaceRoot, '.agents', 'plugins', 'marketplace.json'),
     pluginTargetPath: path.join(marketplaceRoot, 'plugins', PLUGIN_NAME),
+    cachePluginPath: path.join(homeDir, '.codex', 'plugins', 'cache', MARKETPLACE_NAME, PLUGIN_NAME, pluginVersion),
     repoRoot,
   };
 }
@@ -63,7 +65,8 @@ export function getDefaultPaths({ homeDir = os.homedir(), repoRoot = getRepoRoot
 export async function installCodexPlugin(options = {}) {
   const paths = getDefaultPaths(options);
   await fs.mkdir(path.dirname(paths.pluginTargetPath), { recursive: true });
-  await copyPlugin(paths.repoRoot, paths.pluginTargetPath);
+  await copyPlugin(paths.repoRoot, paths.pluginTargetPath, path.join(paths.marketplaceRoot, 'plugins'));
+  await copyPlugin(paths.repoRoot, paths.cachePluginPath, path.dirname(paths.cachePluginPath));
 
   const existingMarketplace = await readJsonIfExists(paths.marketplacePath);
   const marketplace = createOrUpdateMarketplace(existingMarketplace);
@@ -74,7 +77,7 @@ export async function installCodexPlugin(options = {}) {
   return paths;
 }
 
-async function copyPlugin(sourcePath, targetPath) {
+async function copyPlugin(sourcePath, targetPath, expectedParentPath) {
   const source = path.resolve(sourcePath);
   const target = path.resolve(targetPath);
 
@@ -82,7 +85,7 @@ async function copyPlugin(sourcePath, targetPath) {
     return;
   }
 
-  const expectedParent = path.join(os.homedir(), '.agents', 'plugins', 'plugins');
+  const expectedParent = path.resolve(expectedParentPath);
   const relativeTarget = path.relative(expectedParent, target);
   if (relativeTarget.startsWith('..') || path.isAbsolute(relativeTarget)) {
     throw new Error(`Refusing to install outside Codex plugin directory: ${target}`);

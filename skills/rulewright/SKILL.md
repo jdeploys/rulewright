@@ -5,7 +5,8 @@ description: Turn Codex sessions or thread IDs into durable project instruction 
 
 # Rulewright
 
-Rulewright is session-first. Prefer Codex thread/session sources over transcript files.
+Rulewright turns a failed or corrected agent session into a small, durable rule.
+Prefer Codex thread/session sources over transcript files.
 
 ## Workflow
 
@@ -21,20 +22,22 @@ Rulewright is session-first. Prefer Codex thread/session sources over transcript
 
 3. Find agent-behavior correction events.
    - Look for user rejection, frustration, rollback requests, "don't do that", "too broad", "wrong", "not what I meant", or equivalent non-English correction language.
-   - Separate user preference from objective bug. Do not turn a one-off taste into a universal rule without saying the confidence is low.
+   - Separate user preference from objective bug. Mark one-off taste as low confidence.
    - Prefer evidence from repeated corrections, explicit user instructions, or visible failures.
 
-4. Read existing rule files in the target repo.
-   - Prefer, in order: `AGENTS.md`, `CLAUDE.md`, `.cursorrules`, `.cursor/rules/**`, `.github/copilot-instructions.md`.
-   - If none exist, propose creating `AGENTS.md` for Codex-first projects.
-   - Check whether an existing instruction already covers the problem before proposing a new one.
+4. Choose the smallest rule destination.
+   - Read existing rule files before proposing anything: `AGENTS.md`, `CLAUDE.md`, `.cursorrules`, `.cursor/rules/**`, `.github/copilot-instructions.md`, and relevant user/global instruction files when the lesson is cross-project.
+   - Prefer tightening or replacing an existing section over appending a new section.
+   - Do not create a new `.md` file for one rule unless no suitable rule file exists and the user approves.
+   - If existing instructions are already long or repetitive, propose a compact replacement that removes duplication instead of adding more text.
 
-5. Propose a patch, not silent edits.
+5. Propose a compact patch, not silent edits.
    - State the detected failure.
-   - Quote or paraphrase the minimal evidence from the session.
+   - Quote or paraphrase only the minimum evidence.
    - Name the target rule file.
-   - Provide the exact Markdown block to add or replace.
+   - Provide the exact Markdown block to add, replace, or delete.
    - Explain why the rule is narrow enough and what adjacent behavior it must not affect.
+   - Keep the proposed rule under 120 words unless the user asks for detail.
 
 6. Apply only after approval.
    - If the user approves, edit the target rule file with the smallest patch.
@@ -49,6 +52,7 @@ Good Rulewright rules are:
 - narrow enough to avoid blocking valid future work
 - tied to session evidence
 - compatible with existing project instructions
+- short enough that future agents will actually read them
 
 Avoid rules that say only "be careful", "do better", "don't make mistakes", or "always ask first" unless the session evidence justifies that strength.
 
@@ -56,17 +60,16 @@ Avoid rules that say only "be careful", "do better", "don't make mistakes", or "
 
 ```markdown
 Detected failure:
-The agent treated a narrow UI bug as permission to change broader layout behavior.
+The agent claimed an integration was available after checking files, but before runtime verification.
 
 Evidence:
-User said the request was only about a small UI bug and objected to the broader layout change.
+User objected that no real test had been run; the first smoke test then failed.
 
 Target:
-AGENTS.md
+~/.codex/AGENTS.md, existing verification section
 
 Proposed patch:
-## UI Bug Fix Scope Rule
-When fixing a reported UI bug, identify the exact visible element and state before editing. Do not refactor surrounding layout or adjacent flows unless the user explicitly approves the broader scope.
+Add one bullet: "For runtime-loaded integrations, do not claim visible/available until a fresh runtime path confirms it."
 
 Confidence:
 High

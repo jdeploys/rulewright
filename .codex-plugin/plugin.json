@@ -1,20 +1,38 @@
 {
   "name": "rulewright",
   "version": "0.1.0",
-  "description": "Session-first rules doctor for Codex agent runs.",
+  "description": "Turn failed Codex sessions into durable project instructions.",
   "author": {
     "name": "jdeploys"
   },
+  "homepage": "https://github.com/jdeploys/rulewright",
+  "repository": "https://github.com/jdeploys/rulewright",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "rules",
+    "instructions",
+    "agent-memory",
+    "postmortem"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Rulewright",
-    "shortDescription": "Turn failed Codex sessions into durable rules.",
-    "longDescription": "Rulewright reads Codex thread history, identifies agent-behavior correction events, and proposes narrow patches for AGENTS.md, CLAUDE.md, Cursor, or Copilot instruction files.",
+    "shortDescription": "Convert agent corrections into reusable rules.",
+    "longDescription": "Rulewright helps teams preserve lessons from failed or frustrating agent sessions. It reads the Codex thread or session the user selects, identifies concrete correction events, checks existing project instruction files, and proposes narrow Markdown patches for AGENTS.md, CLAUDE.md, Cursor rules, or GitHub Copilot instructions. It is designed to propose changes first, keep scope tight, and avoid turning one-off preferences into broad rules.",
     "developerName": "jdeploys",
     "category": "Productivity",
     "capabilities": [
-      "skills"
+      "Read",
+      "Write",
+      "Review"
     ],
-    "defaultPrompt": "Use Rulewright to analyze a Codex session and propose a project-rule patch."
+    "websiteURL": "https://github.com/jdeploys/rulewright",
+    "brandColor": "#2563EB",
+    "defaultPrompt": [
+      "Analyze this Codex session and propose a rule patch.",
+      "Turn my last correction into an AGENTS.md rule.",
+      "Check whether our project instructions prevent this failure."
+    ]
   }
 }

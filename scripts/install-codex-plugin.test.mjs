@@ -1,8 +1,12 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
 import {
   createOrUpdateMarketplace,
   getMarketplaceEntry,
+  installCodexPlugin,
 } from './install-codex-plugin.mjs';
 
 describe('createOrUpdateMarketplace', () => {
@@ -52,5 +56,35 @@ describe('createOrUpdateMarketplace', () => {
     assert.equal(marketplace.interface.displayName, 'My Plugins');
     assert.equal(marketplace.plugins.length, 1);
     assert.deepEqual(marketplace.plugins[0], getMarketplaceEntry());
+  });
+});
+
+describe('installCodexPlugin', () => {
+  it('creates a Codex CLI-compatible local marketplace root for Rulewright', async () => {
+    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'rulewright-codex-'));
+    const homeDir = path.join(tempRoot, 'home');
+    const repoRoot = path.join(tempRoot, 'repo');
+
+    await fs.mkdir(path.join(repoRoot, '.codex-plugin'), { recursive: true });
+    await fs.writeFile(path.join(repoRoot, '.codex-plugin', 'plugin.json'), '{"name":"rulewright"}\n');
+
+    const paths = await installCodexPlugin({ homeDir, repoRoot });
+    const marketplace = JSON.parse(await fs.readFile(paths.marketplacePath, 'utf8'));
+    const installedManifest = await fs.readFile(
+      path.join(paths.pluginTargetPath, '.codex-plugin', 'plugin.json'),
+      'utf8',
+    );
+    const cachedManifest = await fs.readFile(
+      path.join(paths.cachePluginPath, '.codex-plugin', 'plugin.json'),
+      'utf8',
+    );
+
+    assert.equal(paths.marketplaceRoot, path.join(homeDir, '.agents', 'plugins'));
+    assert.equal(paths.marketplacePath, path.join(paths.marketplaceRoot, '.agents', 'plugins', 'marketplace.json'));
+    assert.equal(paths.pluginTargetPath, path.join(paths.marketplaceRoot, 'plugins', 'rulewright'));
+    assert.equal(paths.cachePluginPath, path.join(homeDir, '.codex', 'plugins', 'cache', 'personal', 'rulewright', '0.1.0'));
+    assert.deepEqual(marketplace.plugins, [getMarketplaceEntry()]);
+    assert.match(installedManifest, /"name":"rulewright"/);
+    assert.match(cachedManifest, /"name":"rulewright"/);
   });
 });

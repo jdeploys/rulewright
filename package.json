@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "install:codex": "node scripts/install-codex-plugin.mjs",
     "test": "node --test scripts/*.test.mjs"
   }
 }

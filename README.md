@@ -11,6 +11,42 @@ patches for files such as `AGENTS.md`, `CLAUDE.md`, `.cursorrules`, and
 
 Early prototype. The first target is Codex thread/session analysis.
 
+## Install In Codex
+
+Clone the repo, then run the local Codex installer:
+
+```bash
+git clone https://github.com/jdeploys/rulewright.git
+cd rulewright
+npm run install:codex
+```
+
+The installer copies Rulewright into your personal Codex plugin directory and
+adds it to your personal marketplace:
+
+```text
+~/.agents/plugins/plugins/rulewright
+~/.agents/plugins/marketplace.json
+```
+
+On Windows, those paths live under your user profile:
+
+```text
+C:\Users\<you>\.agents\plugins\plugins\rulewright
+C:\Users\<you>\.agents\plugins\marketplace.json
+```
+
+After installing, open Codex and look for the `Rulewright` plugin in your
+personal marketplace. If Codex is already running, restart the app or reload the
+plugin list.
+
+To update later, pull the repo and run the installer again:
+
+```bash
+git pull
+npm run install:codex
+```
+
 ## What It Does
 
 - Reads a Codex thread or session selected by the user.

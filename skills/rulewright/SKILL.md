@@ -24,6 +24,7 @@ Prefer Codex thread/session sources over transcript files.
    - Look for user rejection, frustration, rollback requests, "don't do that", "too broad", "wrong", "not what I meant", or equivalent non-English correction language.
    - Separate user preference from objective bug. Mark one-off taste as low confidence.
    - Prefer evidence from repeated corrections, explicit user instructions, or visible failures.
+   - Preserve the user's language when drafting the proposed rule unless the target rule file explicitly requires another language.
 
 4. Choose the smallest rule destination.
    - Read existing rule files before proposing anything: `AGENTS.md`, `CLAUDE.md`, `.cursorrules`, `.cursor/rules/**`, `.github/copilot-instructions.md`, and relevant user/global instruction files when the lesson is cross-project.

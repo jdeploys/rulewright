@@ -22,6 +22,7 @@ describe('installCursorRule', () => {
     assert.match(content, /alwaysApply: true/);
     assert.match(content, /Rulewright/);
     assert.match(content, /failed agent sessions/);
+    assert.match(content, /Preserve the user's language/);
   });
 });
 
@@ -35,6 +36,7 @@ describe('installCopilotInstructions', () => {
     assert.equal(result.copilotInstructionsPath, path.join(targetRepo, '.github', 'copilot-instructions.md'));
     assert.match(content, /<!-- rulewright:start -->/);
     assert.match(content, /Use Rulewright/);
+    assert.match(content, /Preserve the user's language/);
     assert.match(content, /<!-- rulewright:end -->/);
   });
 

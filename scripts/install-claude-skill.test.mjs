@@ -28,7 +28,7 @@ describe('getClaudeDefaultPaths', () => {
 
     assert.equal(
       codexPaths.marketplacePath,
-      path.join('/home/example', '.agents', 'plugins', '.agents', 'plugins', 'marketplace.json'),
+      path.join('/home/example', '.agents', 'plugins', 'marketplace.json'),
     );
     assert.equal(codexPaths.pluginTargetPath, path.join('/home/example', '.agents', 'plugins', 'plugins', 'rulewright'));
   });

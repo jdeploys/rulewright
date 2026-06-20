@@ -12,3 +12,4 @@ Use Rulewright when a user wants to learn from failed agent sessions, repeated c
 - Propose narrow patches for project instruction files such as AGENTS.md, CLAUDE.md, .cursor/rules, or .github/copilot-instructions.md.
 - Preserve existing stronger rules and avoid broad rewrites unless the user explicitly asks.
 - Prefer evidence-backed diffs over silent edits.
+- Preserve the user's language when drafting proposed rules unless the target project explicitly requires another language.

@@ -20,6 +20,7 @@ export function getCursorRuleContent() {
     '- Propose narrow patches for project instruction files such as AGENTS.md, CLAUDE.md, .cursor/rules, or .github/copilot-instructions.md.',
     '- Preserve existing stronger rules and avoid broad rewrites unless the user explicitly asks.',
     '- Prefer evidence-backed diffs over silent edits.',
+    '- Preserve the user\'s language when drafting proposed rules unless the target project explicitly requires another language.',
     '',
   ].join('\n');
 }
@@ -35,6 +36,7 @@ export function getCopilotInstructionBlock() {
     '- Prefer narrow, evidence-backed patches to AGENTS.md, CLAUDE.md, Cursor rules, or Copilot instructions.',
     '- Do not generalize one-off preferences into broad rules without saying confidence is low.',
     '- Preserve existing stronger instructions and propose a diff before editing.',
+    '- Preserve the user\'s language when drafting proposed rules unless the target repository explicitly requires another language.',
     RULEWRIGHT_END,
   ].join('\n');
 }

@@ -53,11 +53,13 @@ export function createOrUpdateMarketplace(existingMarketplace) {
 export function getDefaultPaths({ homeDir = os.homedir(), repoRoot = getRepoRoot() } = {}) {
   const marketplaceRoot = path.join(homeDir, '.agents', 'plugins');
   const pluginVersion = '0.1.0';
+  const cachePluginRoot = path.join(homeDir, '.codex', 'plugins', 'cache', MARKETPLACE_NAME, PLUGIN_NAME);
   return {
     marketplaceRoot,
-    marketplacePath: path.join(marketplaceRoot, '.agents', 'plugins', 'marketplace.json'),
+    marketplacePath: path.join(marketplaceRoot, 'marketplace.json'),
     pluginTargetPath: path.join(marketplaceRoot, 'plugins', PLUGIN_NAME),
-    cachePluginPath: path.join(homeDir, '.codex', 'plugins', 'cache', MARKETPLACE_NAME, PLUGIN_NAME, pluginVersion),
+    cachePluginRoot,
+    cachePluginPath: path.join(cachePluginRoot, pluginVersion),
     repoRoot,
   };
 }
@@ -66,6 +68,7 @@ export async function installCodexPlugin(options = {}) {
   const paths = getDefaultPaths(options);
   await fs.mkdir(path.dirname(paths.pluginTargetPath), { recursive: true });
   await copyPlugin(paths.repoRoot, paths.pluginTargetPath, path.join(paths.marketplaceRoot, 'plugins'));
+  await fs.rm(path.join(paths.cachePluginRoot, '.codex-plugin'), { recursive: true, force: true });
   await copyPlugin(paths.repoRoot, paths.cachePluginPath, path.dirname(paths.cachePluginPath));
 
   const existingMarketplace = await readJsonIfExists(paths.marketplacePath);

@@ -67,6 +67,18 @@ describe('installCodexPlugin', () => {
 
     await fs.mkdir(path.join(repoRoot, '.codex-plugin'), { recursive: true });
     await fs.writeFile(path.join(repoRoot, '.codex-plugin', 'plugin.json'), '{"name":"rulewright"}\n');
+    const staleCacheManifest = path.join(
+      homeDir,
+      '.codex',
+      'plugins',
+      'cache',
+      'personal',
+      'rulewright',
+      '.codex-plugin',
+      'plugin.json',
+    );
+    await fs.mkdir(path.dirname(staleCacheManifest), { recursive: true });
+    await fs.writeFile(staleCacheManifest, '{"name":"stale-rulewright"}\n');
 
     const paths = await installCodexPlugin({ homeDir, repoRoot });
     const marketplace = JSON.parse(await fs.readFile(paths.marketplacePath, 'utf8'));
@@ -80,11 +92,25 @@ describe('installCodexPlugin', () => {
     );
 
     assert.equal(paths.marketplaceRoot, path.join(homeDir, '.agents', 'plugins'));
-    assert.equal(paths.marketplacePath, path.join(paths.marketplaceRoot, '.agents', 'plugins', 'marketplace.json'));
+    assert.equal(paths.marketplacePath, path.join(paths.marketplaceRoot, 'marketplace.json'));
     assert.equal(paths.pluginTargetPath, path.join(paths.marketplaceRoot, 'plugins', 'rulewright'));
+    assert.equal(paths.cachePluginRoot, path.join(homeDir, '.codex', 'plugins', 'cache', 'personal', 'rulewright'));
     assert.equal(paths.cachePluginPath, path.join(homeDir, '.codex', 'plugins', 'cache', 'personal', 'rulewright', '0.1.0'));
     assert.deepEqual(marketplace.plugins, [getMarketplaceEntry()]);
+    assert.equal(await pathExists(staleCacheManifest), false);
     assert.match(installedManifest, /"name":"rulewright"/);
     assert.match(cachedManifest, /"name":"rulewright"/);
   });
 });
+
+async function pathExists(filePath) {
+  try {
+    await fs.access(filePath);
+    return true;
+  } catch (error) {
+    if (error?.code === 'ENOENT') {
+      return false;
+    }
+    throw error;
+  }
+}

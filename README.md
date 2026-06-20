@@ -1,5 +1,7 @@
 # Rulewright
 
+[한국어](README.ko.md)
+
 Rulewright turns failed Codex sessions into durable project instructions.
 
 It is a session-first Codex plugin for reading agent thread history, spotting

@@ -6,6 +6,30 @@ Rulewright는 실패한 에이전트 세션을 재사용 가능한 프로젝트 
 
 세션을 먼저 읽는 방식으로 설계되어 있습니다. Codex thread 기록에서 사용자가 에이전트의 행동을 수정하거나 거절한 지점을 찾고, 그 교훈을 `AGENTS.md`, `CLAUDE.md`, `.cursor/rules`, `.github/copilot-instructions.md` 같은 지침 파일에 넣을 수 있는 좁은 패치로 제안합니다.
 
+```text
+사용자 교정
+  "전체 레이아웃을 바꾸라고 한 게 아니라 crop 버튼만 고치라고 했어."
+
+Rulewright 분석
+  category: scope-control
+  confidence: high
+  language: ko
+
+생성되는 규칙 패치
+  동작을 변경하기 전에 요청된 가장 작은 범위를 먼저 고정한다.
+  바뀌면 안 되는 인접 파일, 모드, 흐름을 명시한다.
+```
+
+- 세션 우선: 추상적인 조언이 아니라 실제로 실패한 대화에서 규칙을 뽑습니다.
+- 패치 우선: 지침 파일을 조용히 고치지 않고 작은 diff를 먼저 제안합니다.
+- 여러 에이전트 지원: Codex, Claude Code, Cursor, GitHub Copilot 흐름에 맞춥니다.
+- 언어 보존: 한국어 교정은 한국어 규칙으로, 영어 교정은 영어 규칙으로 유지합니다.
+
+## 데모
+
+- [demo transcript와 generated rule patch](docs/demo-transcript.md)를 읽어보세요.
+- 터미널 데모는 `asciinema play docs/demo.cast`로 재생할 수 있습니다.
+
 ## 상태
 
 초기 프로토타입입니다. 첫 번째 대상은 Codex thread/session 분석입니다.

@@ -1,0 +1,13 @@
+{"version":2,"width":96,"height":28,"timestamp":1781990400,"env":{"SHELL":"powershell","TERM":"xterm-256color"}}
+[0.100000,"o","$ codex\r\n"]
+[0.700000,"o","> Use Rulewright to analyze thread demo-layout-crop and propose an AGENTS.md rule.\r\n\r\n"]
+[1.300000,"o","Reading Codex thread demo-layout-crop...\r\n"]
+[1.800000,"o","Found 1 correction event.\r\n\r\n"]
+[2.300000,"o","category: scope-control\r\nconfidence: high\r\nlanguage: en\r\n"]
+[3.000000,"o","evidence: No, that is too broad. I asked about layout slot crop edit only.\r\n"]
+[3.800000,"o","\r\nSuggested target: AGENTS.md\r\n"]
+[4.400000,"o","\r\nGenerated patch:\r\n"]
+[4.900000,"o","+ Before changing behavior, lock the smallest requested scope before editing.\r\n"]
+[5.400000,"o","+ Name adjacent files, modes, or flows that must not change.\r\n"]
+[5.900000,"o","+ Do not broaden the fix unless the user explicitly approves that broader scope.\r\n"]
+[6.800000,"o","\r\nApply this patch? [y/N]\r\n"]

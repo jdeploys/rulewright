@@ -2,12 +2,35 @@
 
 [한국어](README.ko.md)
 
-Rulewright turns failed Codex sessions into durable project instructions.
+Turn failed agent sessions into durable project instructions.
 
-It is a session-first Codex plugin for reading agent thread history, spotting
-where the user corrected or rejected agent behavior, and proposing narrow
-patches for files such as `AGENTS.md`, `CLAUDE.md`, `.cursorrules`, and
+Rulewright reads a Codex thread or agent transcript, finds where the user
+corrected the agent, and proposes a narrow rule patch for files such as
+`AGENTS.md`, `CLAUDE.md`, `.cursor/rules`, and
 `.github/copilot-instructions.md`.
+
+```text
+User correction
+  "You changed the whole layout. I only asked you to fix the crop button."
+
+Rulewright finding
+  category: scope-control
+  confidence: high
+
+Generated rule patch
+  Before changing behavior, lock the smallest requested scope.
+  Name adjacent modes and flows that must not change.
+```
+
+- Session-first: works from what actually went wrong, not from generic advice.
+- Patch-first: proposes a small instruction diff before editing rule files.
+- Multi-agent: supports Codex, Claude Code, Cursor, and GitHub Copilot workflows.
+- Language-aware: keeps Korean corrections in Korean and English corrections in English.
+
+## Demo
+
+- Read the [demo transcript and generated rule patch](docs/demo-transcript.md).
+- Play the terminal demo with `asciinema play docs/demo.cast`.
 
 ## Status
 

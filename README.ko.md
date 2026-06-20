@@ -28,11 +28,28 @@ Rulewright 분석
 ## 데모
 
 - [demo transcript와 generated rule patch](docs/demo-transcript.md)를 읽어보세요.
+- [익명화한 실제 세션 예시](docs/real-session-example.md)를 읽어보세요.
 - 터미널 데모는 `asciinema play docs/demo.cast`로 재생할 수 있습니다.
+
+## 누구를 위한 도구인가요?
+
+Rulewright는 이미 에이전트용 프로젝트 지침을 관리하고 있고, 그 지침을 실제 세션에서 배운 내용으로 개선하고 싶은 사람에게 맞습니다.
+
+- Codex, Claude Code, Cursor, GitHub Copilot을 쓰면서 같은 행동을 반복해서 교정하는 사람
+- `AGENTS.md`, `CLAUDE.md`, `.cursor/rules`, `.github/copilot-instructions.md`를 관리하는 개발자
+- "조심해라" 같은 추상적인 조언이 아니라 실제 사건에서 나온 에이전트 규칙을 팀에 남기고 싶은 사람
 
 ## 상태
 
 초기 프로토타입입니다. 첫 번째 대상은 Codex thread/session 분석입니다.
+
+## 준비물
+
+- Git
+- Node.js와 npm
+- Rulewright를 사용할 대상에 따라 Codex, Claude Code, Cursor, GitHub Copilot
+
+현재 스크립트는 별도 package install 단계가 필요 없습니다. repo를 clone한 뒤 필요한 `npm run install:*` 명령만 실행하면 됩니다.
 
 ## Codex에 설치하기
 
@@ -59,6 +76,12 @@ C:\Users\<you>\.agents\plugins\marketplace.json
 ```
 
 설치 후 Codex를 열고 개인 marketplace에서 `Rulewright` 플러그인을 찾으면 됩니다. Codex가 이미 실행 중이었다면 앱을 재시작하거나 플러그인 목록을 새로고침하세요.
+
+새 Codex 세션에서 빠르게 확인하는 프롬프트:
+
+```text
+Use Rulewright to analyze my last corrected agent session and propose an AGENTS.md patch.
+```
 
 나중에 업데이트하려면 repo를 pull한 뒤 installer를 다시 실행합니다.
 
@@ -91,6 +114,12 @@ C:\Users\<you>\.claude\skills\rulewright
 
 설치 후 새 Claude Code 세션을 시작하고 `rulewright`를 사용해 실패한 에이전트 세션을 분석하거나 프로젝트 지침을 개선하라고 요청하면 됩니다.
 
+새 Claude Code 세션에서 빠르게 확인하는 프롬프트:
+
+```text
+Use the rulewright skill to turn my last agent correction into a project rule.
+```
+
 ## Cursor 또는 GitHub Copilot에 설치하기
 
 Cursor와 GitHub Copilot은 repository 지침 파일을 사용합니다. 설치할 때 대상 프로젝트 경로를 넘겨주세요.
@@ -115,6 +144,11 @@ GitHub Copilot installer는 아래 파일에 Rulewright 블록을 생성하거�
 ```
 
 경로를 생략하면 installer는 현재 작업 디렉터리를 대상으로 사용합니다.
+
+빠른 확인:
+
+- Cursor: 대상 repo에서 `.cursor/rules/rulewright.mdc` 파일을 확인합니다.
+- GitHub Copilot: `.github/copilot-instructions.md`에 `rulewright` 블록이 들어갔는지 확인합니다.
 
 ## 하는 일
 

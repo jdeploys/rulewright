@@ -30,11 +30,34 @@ Generated rule patch
 ## Demo
 
 - Read the [demo transcript and generated rule patch](docs/demo-transcript.md).
+- Read an [anonymized real-session example](docs/real-session-example.md).
 - Play the terminal demo with `asciinema play docs/demo.cast`.
+
+## Who Is This For?
+
+Rulewright is for people who already keep project instructions for coding
+agents and want those instructions to improve from real sessions:
+
+- Codex, Claude Code, Cursor, or GitHub Copilot users who repeatedly correct
+  the same agent behavior.
+- Developers maintaining `AGENTS.md`, `CLAUDE.md`, `.cursor/rules`, or
+  `.github/copilot-instructions.md`.
+- Teams that want agent rules to come from concrete incidents instead of vague
+  "be careful" advice.
 
 ## Status
 
 Early prototype. The first target is Codex thread/session analysis.
+
+## Prerequisites
+
+- Git
+- Node.js and npm
+- Codex, Claude Code, Cursor, or GitHub Copilot, depending on where you want to
+  use Rulewright
+
+No package install step is required for the current scripts; clone the repo and
+run the relevant `npm run install:*` command.
 
 ## Install In Codex
 
@@ -64,6 +87,12 @@ C:\Users\<you>\.agents\plugins\marketplace.json
 After installing, open Codex and look for the `Rulewright` plugin in your
 personal marketplace. If Codex is already running, restart the app or reload the
 plugin list.
+
+Quick verification prompt in a fresh Codex session:
+
+```text
+Use Rulewright to analyze my last corrected agent session and propose an AGENTS.md patch.
+```
 
 To update later, pull the repo and run the installer again:
 
@@ -98,6 +127,12 @@ After installing, start a fresh Claude Code session and ask it to use
 `rulewright` to analyze a failed agent session or improve your project
 instructions.
 
+Quick verification prompt in a fresh Claude Code session:
+
+```text
+Use the rulewright skill to turn my last agent correction into a project rule.
+```
+
 ## Install In Cursor Or GitHub Copilot
 
 Cursor and GitHub Copilot use repository instruction files, so pass the target
@@ -123,6 +158,12 @@ GitHub Copilot installs or updates the Rulewright block in:
 ```
 
 If you omit the path, the installers target the current working directory.
+
+Quick verification:
+
+- Cursor: open the target repo and check `.cursor/rules/rulewright.mdc`.
+- GitHub Copilot: check that `.github/copilot-instructions.md` contains a
+  `rulewright` block.
 
 ## What It Does
 

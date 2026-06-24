@@ -1,4 +1,6 @@
 node_modules/
 coverage/
+site/.astro/
+site/dist/
 .DS_Store
 *.log

@@ -33,6 +33,17 @@ Generated rule patch
 - Read an [anonymized real-session example](docs/real-session-example.md).
 - Play the terminal demo with `asciinema play docs/demo.cast`.
 
+## Landing Site
+
+The promotional landing site lives in `site/`.
+
+```bash
+cd site
+npm install
+npm run dev
+npm run build
+```
+
 ## Who Is This For?
 
 Rulewright is for people who already keep project instructions for coding

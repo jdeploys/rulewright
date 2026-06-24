@@ -31,6 +31,17 @@ Rulewright 분석
 - [익명화한 실제 세션 예시](docs/real-session-example.md)를 읽어보세요.
 - 터미널 데모는 `asciinema play docs/demo.cast`로 재생할 수 있습니다.
 
+## 랜딩 사이트
+
+홍보용 랜딩 사이트는 `site/` 아래에 있습니다.
+
+```bash
+cd site
+npm install
+npm run dev
+npm run build
+```
+
 ## 누구를 위한 도구인가요?
 
 Rulewright는 이미 에이전트용 프로젝트 지침을 관리하고 있고, 그 지침을 실제 세션에서 배운 내용으로 개선하고 싶은 사람에게 맞습니다.

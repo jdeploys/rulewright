@@ -1,0 +1,639 @@
+---
+const installTargets = [
+  {
+    name: 'Codex',
+    command: 'npm run install:codex',
+    detail: 'Installs Rulewright as a personal Codex plugin and marketplace entry.',
+  },
+  {
+    name: 'Claude Code',
+    command: 'npm run install:claude',
+    detail: 'Copies the Rulewright skill into your Claude Code skills folder.',
+  },
+  {
+    name: 'Cursor',
+    command: 'npm run install:cursor -- /path/to/project',
+    detail: 'Adds a repository rule at .cursor/rules/rulewright.mdc.',
+  },
+  {
+    name: 'GitHub Copilot',
+    command: 'npm run install:copilot -- /path/to/project',
+    detail: 'Updates .github/copilot-instructions.md with a Rulewright block.',
+  },
+];
+
+const examples = [
+  {
+    label: 'Scope control',
+    correction: 'You changed the whole layout. I only asked for crop edit.',
+    rule: 'Lock the smallest requested scope before editing.',
+  },
+  {
+    label: 'Verification',
+    correction: 'Do not say it is fixed without running the test.',
+    rule: 'Verify the reported behavior before claiming the fix is complete.',
+  },
+  {
+    label: 'Korean rules',
+    correction: '한국어 교정은 한국어 규칙으로 남겨야 하지 않아?',
+    rule: '사용자의 언어를 보존해 규칙을 작성한다.',
+  },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Rulewright turns failed agent sessions into durable project instructions for Codex, Claude Code, Cursor, and GitHub Copilot."
+    />
+    <title>Rulewright - Turn agent mistakes into rules</title>
+  </head>
+  <body>
+    <main class="site-shell">
+      <section class="hero" aria-labelledby="hero-title">
+        <nav class="topbar" aria-label="Primary">
+          <a class="brand" href="https://github.com/jdeploys/rulewright">Rulewright</a>
+          <div class="nav-links">
+            <a href="#examples">Examples</a>
+            <a href="#install">Install</a>
+            <a href="https://github.com/jdeploys/rulewright">GitHub</a>
+          </div>
+        </nav>
+
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Your agent messed up. Keep the lesson.</p>
+            <h1 id="hero-title">Turn agent mistakes into rules</h1>
+            <p class="hero-lede">
+              Rulewright reads corrected Codex, Claude, Cursor, and Copilot sessions, then proposes
+              durable instruction patches for the rule files your agents already follow.
+            </p>
+            <div class="hero-actions" aria-label="Primary actions">
+              <a class="button primary" href="https://github.com/jdeploys/rulewright">View on GitHub</a>
+              <a class="button secondary" href="https://github.com/jdeploys/rulewright/blob/main/docs/demo-transcript.md">
+                Read the demo
+              </a>
+            </div>
+          </div>
+
+          <div class="conversion-scene" aria-label="Rulewright conversion example">
+            <div class="terminal-panel session-panel">
+              <div class="panel-header">
+                <span>session</span>
+                <span>corrected</span>
+              </div>
+              <pre><code>User:
+"You changed the whole layout.
+I only asked for crop edit."
+
+Rulewright:
+scope-control
+confidence: high</code></pre>
+            </div>
+
+            <div class="flow-line" aria-hidden="true">
+              <span></span>
+            </div>
+
+            <div class="terminal-panel patch-panel">
+              <div class="panel-header">
+                <span>AGENTS.md</span>
+                <span>patch</span>
+              </div>
+              <pre><code>+ Lock the smallest requested scope.
++ Name adjacent modes that must not change.
++ Do not broaden the fix without approval.</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="problem-section" aria-labelledby="problem-title">
+        <div>
+          <p class="section-kicker">The failure mode</p>
+          <h2 id="problem-title">Corrections disappear inside chat history.</h2>
+        </div>
+        <p>
+          Every useful correction is a tiny postmortem. Rulewright turns those moments into
+          reusable project instructions before the lesson fades into another session transcript.
+        </p>
+      </section>
+
+      <section class="steps-section" aria-labelledby="steps-title">
+        <p class="section-kicker">How it works</p>
+        <h2 id="steps-title">From corrected session to project rule.</h2>
+        <div class="step-grid">
+          <article>
+            <span class="step-number">01</span>
+            <h3>Read the session</h3>
+            <p>Start from the Codex thread or transcript where the agent was corrected.</p>
+          </article>
+          <article>
+            <span class="step-number">02</span>
+            <h3>Detect the lesson</h3>
+            <p>Classify scope, verification, communication, and language-preservation signals.</p>
+          </article>
+          <article>
+            <span class="step-number">03</span>
+            <h3>Propose the patch</h3>
+            <p>Route a narrow rule to AGENTS.md, CLAUDE.md, Cursor rules, or Copilot instructions.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="examples" class="examples-section" aria-labelledby="examples-title">
+        <p class="section-kicker">Examples</p>
+        <h2 id="examples-title">Rules grounded in actual corrections.</h2>
+        <div class="example-list">
+          {
+            examples.map((example) => (
+              <article>
+                <div>
+                  <span>{example.label}</span>
+                  <p>{example.correction}</p>
+                </div>
+                <pre><code>+ {example.rule}</code></pre>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section id="install" class="install-section" aria-labelledby="install-title">
+        <div class="install-heading">
+          <p class="section-kicker">Install</p>
+          <h2 id="install-title">Use it where your agents already read rules.</h2>
+          <p>Clone once, then install Rulewright into your preferred agent workflow.</p>
+        </div>
+
+        <div class="install-grid">
+          {
+            installTargets.map((target) => (
+              <article>
+                <h3>{target.name}</h3>
+                <pre><code>{target.command}</code></pre>
+                <p>{target.detail}</p>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="closing-section" aria-labelledby="closing-title">
+        <p class="section-kicker">Open source</p>
+        <h2 id="closing-title">Stop losing the fixes you already paid for.</h2>
+        <p>
+          Rulewright is an early open-source prototype for teams that want agent behavior to improve
+          through concrete session evidence.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="https://github.com/jdeploys/rulewright">Star the project</a>
+          <a class="button secondary" href="https://github.com/jdeploys/rulewright/releases/tag/v0.1.0">
+            View v0.1.0
+          </a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
+
+<style>
+  :root {
+    color-scheme: dark;
+    --ink: #f7f0df;
+    --muted: #b8b09f;
+    --line: rgba(247, 240, 223, 0.16);
+    --panel: rgba(23, 24, 23, 0.78);
+    --panel-strong: rgba(32, 34, 31, 0.92);
+    --black: #0d0f0d;
+    --charcoal: #171817;
+    --moss: #83d18b;
+    --amber: #f0b866;
+    --cyan: #79d9cf;
+    --red: #ef7d70;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    background: var(--black);
+    color: var(--ink);
+    font-family:
+      Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    letter-spacing: 0;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    background: linear-gradient(180deg, #0d0f0d 0%, #151713 45%, #0d0f0d 100%);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .site-shell {
+    overflow: hidden;
+  }
+
+  .hero {
+    min-height: 92vh;
+    padding: 24px clamp(18px, 4vw, 56px) 72px;
+    position: relative;
+  }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(247, 240, 223, 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(247, 240, 223, 0.045) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: linear-gradient(180deg, black 0%, black 65%, transparent 100%);
+  }
+
+  .topbar,
+  .hero-grid,
+  .problem-section,
+  .steps-section,
+  .examples-section,
+  .install-section,
+  .closing-section {
+    width: min(1180px, 100%);
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 14px 0;
+  }
+
+  .brand {
+    font-size: 0.95rem;
+    font-weight: 760;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: clamp(14px, 3vw, 28px);
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  .nav-links a:hover {
+    color: var(--ink);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(420px, 1.08fr);
+    gap: clamp(36px, 7vw, 88px);
+    align-items: center;
+    padding-top: clamp(58px, 10vh, 112px);
+  }
+
+  .hero-copy {
+    max-width: 620px;
+  }
+
+  .eyebrow,
+  .section-kicker {
+    color: var(--amber);
+    font-size: 0.78rem;
+    font-weight: 760;
+    letter-spacing: 0;
+    margin: 0 0 16px;
+    text-transform: uppercase;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    margin-top: 0;
+  }
+
+  h1 {
+    font-size: clamp(3.4rem, 8.2vw, 7.8rem);
+    line-height: 0.92;
+    max-width: 760px;
+    margin-bottom: 24px;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 4vw, 4rem);
+    line-height: 1;
+    margin-bottom: 18px;
+  }
+
+  h3 {
+    font-size: 1.08rem;
+    margin-bottom: 12px;
+  }
+
+  .hero-lede {
+    color: var(--muted);
+    font-size: clamp(1.08rem, 2vw, 1.35rem);
+    line-height: 1.55;
+    max-width: 670px;
+    margin-bottom: 32px;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .button {
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    display: inline-flex;
+    font-size: 0.95rem;
+    font-weight: 740;
+    min-height: 44px;
+    padding: 0 18px;
+  }
+
+  .button.primary {
+    background: var(--ink);
+    color: #151713;
+  }
+
+  .button.secondary {
+    background: rgba(247, 240, 223, 0.06);
+    color: var(--ink);
+  }
+
+  .conversion-scene {
+    display: grid;
+    gap: 18px;
+    position: relative;
+  }
+
+  .terminal-panel {
+    background: var(--panel-strong);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+    overflow: hidden;
+  }
+
+  .session-panel {
+    transform: translateX(-24px);
+  }
+
+  .patch-panel {
+    transform: translateX(28px);
+  }
+
+  .panel-header {
+    align-items: center;
+    background: rgba(247, 240, 223, 0.055);
+    border-bottom: 1px solid var(--line);
+    color: var(--muted);
+    display: flex;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-size: 0.78rem;
+    justify-content: space-between;
+    padding: 11px 14px;
+  }
+
+  pre {
+    margin: 0;
+    overflow-x: auto;
+    padding: clamp(16px, 2.5vw, 24px);
+  }
+
+  code {
+    color: var(--ink);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-size: clamp(0.82rem, 1.3vw, 0.98rem);
+    line-height: 1.65;
+    white-space: pre;
+  }
+
+  .patch-panel code {
+    color: var(--moss);
+  }
+
+  .flow-line {
+    height: 30px;
+    position: relative;
+  }
+
+  .flow-line span {
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    display: block;
+    height: 1px;
+    margin: 15px auto 0;
+    width: 70%;
+  }
+
+  .problem-section,
+  .steps-section,
+  .examples-section,
+  .install-section,
+  .closing-section {
+    padding: clamp(72px, 10vw, 128px) clamp(18px, 4vw, 56px);
+  }
+
+  .problem-section {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(280px, 0.75fr);
+    gap: clamp(24px, 6vw, 88px);
+    border-top: 1px solid var(--line);
+  }
+
+  .problem-section p,
+  .install-heading p,
+  .closing-section p {
+    color: var(--muted);
+    font-size: 1.06rem;
+    line-height: 1.7;
+  }
+
+  .step-grid,
+  .install-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 32px;
+  }
+
+  .step-grid article,
+  .install-grid article,
+  .example-list article {
+    background: rgba(247, 240, 223, 0.045);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+
+  .step-grid article {
+    padding: 24px;
+  }
+
+  .step-number {
+    color: var(--cyan);
+    display: block;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-size: 0.85rem;
+    margin-bottom: 26px;
+  }
+
+  .step-grid p,
+  .example-list p,
+  .install-grid p {
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 0;
+  }
+
+  .example-list {
+    display: grid;
+    gap: 14px;
+    margin-top: 32px;
+  }
+
+  .example-list article {
+    align-items: center;
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(320px, 1fr);
+    gap: 20px;
+    padding: 18px;
+  }
+
+  .example-list span {
+    color: var(--amber);
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 760;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .example-list pre,
+  .install-grid pre {
+    background: rgba(13, 15, 13, 0.66);
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    overflow: hidden;
+  }
+
+  .example-list code,
+  .install-grid code {
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+  }
+
+  .install-heading {
+    max-width: 700px;
+  }
+
+  .install-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .install-grid article {
+    padding: 18px;
+  }
+
+  .install-grid h3 {
+    min-height: 2.4em;
+  }
+
+  .install-grid pre {
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+
+  .install-grid code {
+    font-size: 0.76rem;
+    line-height: 1.5;
+  }
+
+  .closing-section {
+    border-top: 1px solid var(--line);
+    padding-bottom: 120px;
+  }
+
+  .closing-section p {
+    max-width: 680px;
+  }
+
+  @media (max-width: 980px) {
+    .hero-grid,
+    .problem-section,
+    .example-list article {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-grid {
+      padding-top: 44px;
+    }
+
+    .conversion-scene {
+      margin-top: 10px;
+    }
+
+    .session-panel,
+    .patch-panel {
+      transform: none;
+    }
+
+    .step-grid,
+    .install-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      min-height: auto;
+      padding-bottom: 42px;
+    }
+
+    .topbar {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .nav-links {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    h1 {
+      font-size: clamp(3rem, 18vw, 4.5rem);
+    }
+
+    .step-grid,
+    .install-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .problem-section,
+    .steps-section,
+    .examples-section,
+    .install-section,
+    .closing-section {
+      padding-left: 18px;
+      padding-right: 18px;
+    }
+  }
+</style>

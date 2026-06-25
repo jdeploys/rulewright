@@ -91,8 +91,8 @@ const examples = [
 I only asked for crop edit."
 
 Rulewright:
-scope-control
-confidence: high</code></pre>
+<span class="status-token">scope-control</span>
+confidence: high<span class="cursor" aria-hidden="true"></span></code></pre>
             </div>
 
             <div class="flow-line" aria-hidden="true">
@@ -104,9 +104,9 @@ confidence: high</code></pre>
                 <span>AGENTS.md</span>
                 <span>patch</span>
               </div>
-              <pre><code>+ Lock the smallest requested scope.
-+ Name adjacent modes that must not change.
-+ Do not broaden the fix without approval.</code></pre>
+              <pre><code><span class="patch-line">+ Lock the smallest requested scope.</span>
+<span class="patch-line">+ Name adjacent modes that must not change.</span>
+<span class="patch-line">+ Do not broaden the fix without approval.</span></code></pre>
             </div>
           </div>
         </div>
@@ -308,6 +308,7 @@ confidence: high</code></pre>
 
   .hero-copy {
     max-width: 620px;
+    animation: copy-rise 720ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
   }
 
   .eyebrow,
@@ -368,6 +369,14 @@ confidence: high</code></pre>
     font-weight: 740;
     min-height: 44px;
     padding: 0 18px;
+    transition:
+      border-color 180ms ease,
+      transform 180ms ease,
+      background-color 180ms ease;
+  }
+
+  .button:hover {
+    transform: translateY(-2px);
   }
 
   .button.primary {
@@ -392,13 +401,16 @@ confidence: high</code></pre>
     border-radius: 8px;
     box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
     overflow: hidden;
+    will-change: opacity, transform;
   }
 
   .session-panel {
+    animation: panel-rise 760ms cubic-bezier(0.2, 0.8, 0.2, 1) 180ms both;
     transform: translateX(-24px);
   }
 
   .patch-panel {
+    animation: panel-rise 760ms cubic-bezier(0.2, 0.8, 0.2, 1) 780ms both;
     transform: translateX(28px);
   }
 
@@ -432,12 +444,46 @@ confidence: high</code></pre>
     color: var(--moss);
   }
 
+  .status-token {
+    background: rgba(121, 217, 207, 0.12);
+    border: 1px solid rgba(121, 217, 207, 0.28);
+    border-radius: 999px;
+    color: var(--cyan);
+    display: inline-block;
+    margin: 2px 0;
+    padding: 1px 8px;
+  }
+
+  .cursor {
+    animation: cursor-blink 1s steps(2, end) infinite;
+    background: var(--amber);
+    display: inline-block;
+    height: 1em;
+    margin-left: 5px;
+    transform: translateY(2px);
+    width: 7px;
+  }
+
+  .patch-line {
+    animation: rule-reveal 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    display: block;
+  }
+
+  .patch-line:nth-child(2) {
+    animation-delay: 1160ms;
+  }
+
+  .patch-line:nth-child(3) {
+    animation-delay: 1380ms;
+  }
+
   .flow-line {
     height: 30px;
     position: relative;
   }
 
   .flow-line span {
+    animation: flow-scan 1800ms ease-in-out 560ms both;
     background: linear-gradient(90deg, transparent, var(--cyan), transparent);
     display: block;
     height: 1px;
@@ -479,9 +525,26 @@ confidence: high</code></pre>
   .step-grid article,
   .install-grid article,
   .example-list article {
+    animation: card-enter 640ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
     background: rgba(247, 240, 223, 0.045);
     border: 1px solid var(--line);
     border-radius: 8px;
+  }
+
+  .step-grid article:nth-child(2),
+  .install-grid article:nth-child(2),
+  .example-list article:nth-child(2) {
+    animation-delay: 90ms;
+  }
+
+  .step-grid article:nth-child(3),
+  .install-grid article:nth-child(3),
+  .example-list article:nth-child(3) {
+    animation-delay: 180ms;
+  }
+
+  .install-grid article:nth-child(4) {
+    animation-delay: 270ms;
   }
 
   .step-grid article {
@@ -576,6 +639,81 @@ confidence: high</code></pre>
     max-width: 680px;
   }
 
+  @keyframes copy-rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes panel-rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 22px, 0) scale(0.985);
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes flow-scan {
+    from {
+      opacity: 0;
+      transform: scaleX(0.2);
+    }
+
+    45% {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0.9;
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes rule-reveal {
+    from {
+      opacity: 0;
+      transform: translateX(-12px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes card-enter {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes cursor-blink {
+    0%,
+    45% {
+      opacity: 1;
+    }
+
+    46%,
+    100% {
+      opacity: 0;
+    }
+  }
+
   @media (max-width: 980px) {
     .hero-grid,
     .problem-section,
@@ -593,6 +731,7 @@ confidence: high</code></pre>
 
     .session-panel,
     .patch-panel {
+      animation-name: panel-rise;
       transform: none;
     }
 
@@ -634,6 +773,16 @@ confidence: high</code></pre>
     .closing-section {
       padding-left: 18px;
       padding-right: 18px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      scroll-behavior: auto !important;
+      transition: none !important;
     }
   }
 </style>

@@ -23,4 +23,14 @@ describe('Rulewright landing page source', () => {
     assert.match(source, /site:\s*'https:\/\/jdeploys\.github\.io'/);
     assert.match(source, /base:\s*'\/rulewright'/);
   });
+
+  it('adds restrained landing motion with reduced-motion support', async () => {
+    const source = await fs.readFile(pagePath, 'utf8');
+
+    assert.match(source, /@keyframes panel-rise/);
+    assert.match(source, /@keyframes rule-reveal/);
+    assert.match(source, /class="patch-line"/);
+    assert.match(source, /prefers-reduced-motion:\s*reduce/);
+    assert.match(source, /animation:\s*none\s*!important/);
+  });
 });

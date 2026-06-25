@@ -37,6 +37,8 @@ Generated rule patch
 
 The promotional landing site lives in `site/`.
 
+Live site: <https://jdeploys.github.io/rulewright/>
+
 ```bash
 cd site
 npm install

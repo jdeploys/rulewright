@@ -35,6 +35,8 @@ Rulewright 분석
 
 홍보용 랜딩 사이트는 `site/` 아래에 있습니다.
 
+라이브 사이트: <https://jdeploys.github.io/rulewright/>
+
 ```bash
 cd site
 npm install

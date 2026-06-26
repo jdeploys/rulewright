@@ -22,6 +22,8 @@ const installTargets = [
   },
 ];
 
+const languages = ['English', 'Korean', 'Japanese', 'Chinese', 'Spanish'];
+
 const examples = [
   {
     label: 'Scope control',
@@ -34,9 +36,9 @@ const examples = [
     rule: 'Verify the reported behavior before claiming the fix is complete.',
   },
   {
-    label: 'Korean rules',
-    correction: '한국어 교정은 한국어 규칙으로 남겨야 하지 않아?',
-    rule: '사용자의 언어를 보존해 규칙을 작성한다.',
+    label: 'Language profiles',
+    correction: '違う、全体のレイアウトを変えないで。',
+    rule: '要求された最小範囲を固定する。',
   },
 ];
 ---
@@ -70,8 +72,14 @@ const examples = [
             <h1 id="hero-title">Turn agent mistakes into rules</h1>
             <p class="hero-lede">
               Rulewright reads corrected Codex, Claude, Cursor, and Copilot sessions, then proposes
-              durable instruction patches for the rule files your agents already follow.
+              durable instruction patches in the language your team already used to correct the agent.
             </p>
+            <div class="language-strip" aria-label="Localized rule templates">
+              <span>Localized rule templates</span>
+              <ul>
+                {languages.map((language) => <li>{language}</li>)}
+              </ul>
+            </div>
             <div class="hero-actions" aria-label="Primary actions">
               <a class="button primary" href="https://github.com/jdeploys/rulewright">View on GitHub</a>
               <a class="button secondary" href="https://github.com/jdeploys/rulewright/blob/main/docs/demo-transcript.md">
@@ -92,6 +100,7 @@ I only asked for crop edit."
 
 Rulewright:
 <span class="status-token">scope-control</span>
+language: en
 confidence: high<span class="cursor" aria-hidden="true"></span></code></pre>
             </div>
 
@@ -135,7 +144,7 @@ confidence: high<span class="cursor" aria-hidden="true"></span></code></pre>
           <article>
             <span class="step-number">02</span>
             <h3>Detect the lesson</h3>
-            <p>Classify scope, verification, communication, and language-preservation signals.</p>
+            <p>Classify scope, verification, communication, and localized language-profile signals.</p>
           </article>
           <article>
             <span class="step-number">03</span>
@@ -351,7 +360,41 @@ confidence: high<span class="cursor" aria-hidden="true"></span></code></pre>
     font-size: clamp(1.08rem, 2vw, 1.35rem);
     line-height: 1.55;
     max-width: 670px;
+    margin-bottom: 22px;
+  }
+
+  .language-strip {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
     margin-bottom: 32px;
+  }
+
+  .language-strip > span {
+    color: var(--cyan);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-size: 0.82rem;
+  }
+
+  .language-strip ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .language-strip li {
+    background: rgba(247, 240, 223, 0.055);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink);
+    font-size: 0.82rem;
+    font-weight: 680;
+    line-height: 1;
+    padding: 8px 10px;
   }
 
   .hero-actions {

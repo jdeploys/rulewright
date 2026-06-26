@@ -33,4 +33,17 @@ describe('Rulewright landing page source', () => {
     assert.match(source, /prefers-reduced-motion:\s*reduce/);
     assert.match(source, /animation:\s*none\s*!important/);
   });
+
+  it('presents the current localized language support', async () => {
+    const source = await fs.readFile(pagePath, 'utf8');
+
+    assert.match(source, /const languages = \[/);
+    assert.match(source, /English/);
+    assert.match(source, /Korean/);
+    assert.match(source, /Japanese/);
+    assert.match(source, /Chinese/);
+    assert.match(source, /Spanish/);
+    assert.match(source, /Language profiles/);
+    assert.match(source, /Localized rule templates/);
+  });
 });

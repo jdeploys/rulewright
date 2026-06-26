@@ -25,7 +25,8 @@ Generated rule patch
 - Session-first: works from what actually went wrong, not from generic advice.
 - Patch-first: proposes a small instruction diff before editing rule files.
 - Multi-agent: supports Codex, Claude Code, Cursor, and GitHub Copilot workflows.
-- Language-aware: keeps Korean corrections in Korean and English corrections in English.
+- Language-aware: keeps corrections in the detected language when a localized
+  rule template is available.
 
 ## Demo
 
@@ -183,6 +184,8 @@ Quick verification:
 - Reads a Codex thread or session selected by the user.
 - Detects correction signals such as overly broad edits, missing verification,
   or communication mismatch.
+- Detects English, Korean, Japanese, Chinese, and Spanish corrections for
+  localized rule suggestions, with English fallback for unsupported languages.
 - Routes suggested rules to the most appropriate project instruction file.
 - Proposes patches first instead of silently rewriting rule files.
 

@@ -41,6 +41,54 @@ describe('analyzeSession', () => {
     assert.equal(result.findings[0].language, 'ko');
   });
 
+  it('detects Japanese scope-control corrections', () => {
+    const result = analyzeSession({
+      source: { kind: 'codex-thread', id: 'thread-ja' },
+      turns: [
+        {
+          role: 'user',
+          text: '違う、全体のレイアウトを変えないで。ボタンだけ直してほしかった。',
+        },
+      ],
+    });
+
+    assert.equal(result.findings.length, 1);
+    assert.equal(result.findings[0].category, 'scope-control');
+    assert.equal(result.findings[0].language, 'ja');
+  });
+
+  it('detects Chinese scope-control corrections', () => {
+    const result = analyzeSession({
+      source: { kind: 'codex-thread', id: 'thread-zh' },
+      turns: [
+        {
+          role: 'user',
+          text: '不对，不要改整个布局。我只是让你修按钮。',
+        },
+      ],
+    });
+
+    assert.equal(result.findings.length, 1);
+    assert.equal(result.findings[0].category, 'scope-control');
+    assert.equal(result.findings[0].language, 'zh');
+  });
+
+  it('detects Spanish scope-control corrections', () => {
+    const result = analyzeSession({
+      source: { kind: 'codex-thread', id: 'thread-es' },
+      turns: [
+        {
+          role: 'user',
+          text: 'No, cambiaste todo el layout. Solo pedi arreglar el boton.',
+        },
+      ],
+    });
+
+    assert.equal(result.findings.length, 1);
+    assert.equal(result.findings[0].category, 'scope-control');
+    assert.equal(result.findings[0].language, 'es');
+  });
+
   it('ignores ordinary user requests that are not corrections', () => {
     const result = analyzeSession({
       source: { kind: 'codex-thread', id: 'thread-456' },
@@ -92,6 +140,38 @@ describe('suggestRule', () => {
 
     assert.match(rule.title, /Verification/);
     assert.doesNotMatch(rule.body, /검증/);
+  });
+
+  it('turns supported non-English findings into localized project instructions', () => {
+    const cases = [
+      {
+        language: 'ja',
+        title: /スコープ/,
+        body: /要求された最小範囲/,
+      },
+      {
+        language: 'zh',
+        title: /范围/,
+        body: /最小请求范围/,
+      },
+      {
+        language: 'es',
+        title: /alcance/i,
+        body: /alcance solicitado mas pequeno/i,
+      },
+    ];
+
+    for (const testCase of cases) {
+      const rule = suggestRule({
+        category: 'scope-control',
+        evidence: 'user correction',
+        confidence: 'high',
+        language: testCase.language,
+      });
+
+      assert.match(rule.title, testCase.title);
+      assert.match(rule.body, testCase.body);
+    }
   });
 });
 

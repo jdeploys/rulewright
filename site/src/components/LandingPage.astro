@@ -53,7 +53,7 @@ const releaseUrl = 'https://github.com/jdeploys/rulewright/releases/tag/v0.1.0';
             <div class="language-strip" aria-label={content.hero.languageLabel ?? 'Localized rule templates'}>
               <span>{content.hero.languageLabel}</span>
               <ul>
-                {locales.map((locale) => <li>{locale.name}</li>)}
+                {locales.map((locale) => <li>{locale.nativeName}</li>)}
               </ul>
             </div>
             <div class="hero-actions" aria-label="Primary actions">

@@ -2,6 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { landingContent } from '../site/src/data/landing-content.js';
 
 const pagePath = path.resolve('site/src/pages/index.astro');
 const localizedPagePath = path.resolve('site/src/pages/[locale].astro');
@@ -50,7 +51,7 @@ describe('Rulewright landing page source', () => {
     assert.match(source, /Japanese/);
     assert.match(source, /Chinese/);
     assert.match(source, /Spanish/);
-    assert.match(source, /Language profiles/);
+    assert.match(source, /Concise communication/);
     assert.match(component, /Localized rule templates/);
   });
 
@@ -69,5 +70,21 @@ describe('Rulewright landing page source', () => {
     assert.match(content, /ja:\s*{/);
     assert.match(content, /zh:\s*{/);
     assert.match(content, /es:\s*{/);
+  });
+
+  it('uses native language names and locale-specific samples', async () => {
+    const component = await fs.readFile(landingComponentPath, 'utf8');
+
+    assert.match(component, /locale\.nativeName/);
+    assert.equal(landingContent.en.examples.items[2].label, 'Concise communication');
+    assert.match(landingContent.en.examples.items[2].correction, /too long/i);
+    assert.equal(landingContent.ko.examples.items[2].label, '한국어 규칙 보존');
+    assert.match(landingContent.ko.examples.items[2].rule, /한국어 규칙/);
+    assert.equal(landingContent.ja.examples.items[2].label, '簡潔な応答');
+    assert.match(landingContent.ja.examples.items[2].rule, /結果を先に/);
+    assert.equal(landingContent.zh.examples.items[2].label, '简洁回复');
+    assert.match(landingContent.zh.examples.items[2].rule, /先说明结果/);
+    assert.equal(landingContent.es.examples.items[2].label, 'Respuesta concisa');
+    assert.match(landingContent.es.examples.items[2].rule, /Empieza por el resultado/);
   });
 });

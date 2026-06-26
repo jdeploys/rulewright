@@ -1,0 +1,803 @@
+---
+import { locales } from '../data/landing-content.js';
+
+const { content, currentLocale } = Astro.props;
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+const pagePathFor = (locale) => (locale === 'en' ? `${basePath}/` : `${basePath}/${locale}/`);
+const githubUrl = 'https://github.com/jdeploys/rulewright';
+const demoUrl = 'https://github.com/jdeploys/rulewright/blob/main/docs/demo-transcript.md';
+const releaseUrl = 'https://github.com/jdeploys/rulewright/releases/tag/v0.1.0';
+---
+
+<!doctype html>
+<html lang={content.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={content.description} />
+    <title>{content.title}</title>
+    {locales.map((locale) => <link rel="alternate" hreflang={locale.code} href={pagePathFor(locale.code)} />)}
+    <link rel="alternate" hreflang="x-default" href={pagePathFor('en')} />
+  </head>
+  <body>
+    <main class="site-shell">
+      <section class="hero" aria-labelledby="hero-title">
+        <nav class="topbar" aria-label="Primary">
+          <a class="brand" href={githubUrl}>Rulewright</a>
+          <div class="nav-links">
+            <a href="#examples">{content.nav.examples}</a>
+            <a href="#install">{content.nav.install}</a>
+            <a href={githubUrl}>{content.nav.github}</a>
+          </div>
+        </nav>
+
+        <div class="language-switcher" aria-label={content.languageSwitcherLabel}>
+          {
+            locales.map((locale) => (
+              <a
+                href={pagePathFor(locale.code)}
+                hreflang={locale.code}
+                aria-current={locale.code === currentLocale ? 'page' : undefined}
+              >
+                {locale.nativeName}
+              </a>
+            ))
+          }
+        </div>
+
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">{content.hero.eyebrow}</p>
+            <h1 id="hero-title">{content.hero.title}</h1>
+            <p class="hero-lede">{content.hero.lede}</p>
+            <div class="language-strip" aria-label={content.hero.languageLabel ?? 'Localized rule templates'}>
+              <span>{content.hero.languageLabel}</span>
+              <ul>
+                {locales.map((locale) => <li>{locale.name}</li>)}
+              </ul>
+            </div>
+            <div class="hero-actions" aria-label="Primary actions">
+              <a class="button primary" href={githubUrl}>{content.hero.primaryAction}</a>
+              <a class="button secondary" href={demoUrl}>{content.hero.secondaryAction}</a>
+            </div>
+          </div>
+
+          <div class="conversion-scene" aria-label="Rulewright conversion example">
+            <div class="terminal-panel session-panel">
+              <div class="panel-header">
+                <span>session</span>
+                <span>corrected</span>
+              </div>
+              <pre><code>{content.terminal.userLabel}
+{content.terminal.correction}
+
+{content.terminal.rulewrightLabel}
+<span class="status-token">{content.terminal.category}</span>
+language: {content.terminal.language}
+confidence: {content.terminal.confidence}<span class="cursor" aria-hidden="true"></span></code></pre>
+            </div>
+
+            <div class="flow-line" aria-hidden="true">
+              <span></span>
+            </div>
+
+            <div class="terminal-panel patch-panel">
+              <div class="panel-header">
+                <span>{content.terminal.patchTarget}</span>
+                <span>{content.terminal.patchLabel}</span>
+              </div>
+              <pre><code>{content.terminal.patchLines.map((line) => <span class="patch-line">+ {line}</span>)}</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="problem-section" aria-labelledby="problem-title">
+        <div>
+          <p class="section-kicker">{content.problem.kicker}</p>
+          <h2 id="problem-title">{content.problem.title}</h2>
+        </div>
+        <p>{content.problem.body}</p>
+      </section>
+
+      <section class="steps-section" aria-labelledby="steps-title">
+        <p class="section-kicker">{content.steps.kicker}</p>
+        <h2 id="steps-title">{content.steps.title}</h2>
+        <div class="step-grid">
+          {
+            content.steps.items.map((step, index) => (
+              <article>
+                <span class="step-number">{String(index + 1).padStart(2, '0')}</span>
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section id="examples" class="examples-section" aria-labelledby="examples-title">
+        <p class="section-kicker">{content.examples.kicker}</p>
+        <h2 id="examples-title">{content.examples.title}</h2>
+        <div class="example-list">
+          {
+            content.examples.items.map((example) => (
+              <article>
+                <div>
+                  <span>{example.label}</span>
+                  <p>{example.correction}</p>
+                </div>
+                <pre><code>+ {example.rule}</code></pre>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section id="install" class="install-section" aria-labelledby="install-title">
+        <div class="install-heading">
+          <p class="section-kicker">{content.install.kicker}</p>
+          <h2 id="install-title">{content.install.title}</h2>
+          <p>{content.install.body}</p>
+        </div>
+
+        <div class="install-grid">
+          {
+            content.install.targets.map((target) => (
+              <article>
+                <h3>{target.name}</h3>
+                <pre><code>{target.command}</code></pre>
+                <p>{target.detail}</p>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="closing-section" aria-labelledby="closing-title">
+        <p class="section-kicker">{content.closing.kicker}</p>
+        <h2 id="closing-title">{content.closing.title}</h2>
+        <p>{content.closing.body}</p>
+        <div class="hero-actions">
+          <a class="button primary" href={githubUrl}>{content.closing.primaryAction}</a>
+          <a class="button secondary" href={releaseUrl}>{content.closing.secondaryAction}</a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
+
+<style>
+  :root {
+    color-scheme: dark;
+    --ink: #f7f0df;
+    --muted: #b8b09f;
+    --line: rgba(247, 240, 223, 0.16);
+    --panel: rgba(23, 24, 23, 0.78);
+    --panel-strong: rgba(32, 34, 31, 0.92);
+    --black: #0d0f0d;
+    --charcoal: #171817;
+    --moss: #83d18b;
+    --amber: #f0b866;
+    --cyan: #79d9cf;
+    --red: #ef7d70;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    background: var(--black);
+    color: var(--ink);
+    font-family:
+      Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    letter-spacing: 0;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    background: linear-gradient(180deg, #0d0f0d 0%, #151713 45%, #0d0f0d 100%);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .site-shell {
+    overflow: hidden;
+  }
+
+  .hero {
+    min-height: 92vh;
+    padding: 24px clamp(18px, 4vw, 56px) 72px;
+    position: relative;
+  }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(247, 240, 223, 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(247, 240, 223, 0.045) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: linear-gradient(180deg, black 0%, black 65%, transparent 100%);
+  }
+
+  .topbar,
+  .language-switcher,
+  .hero-grid,
+  .problem-section,
+  .steps-section,
+  .examples-section,
+  .install-section,
+  .closing-section {
+    width: min(1180px, 100%);
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 14px 0;
+  }
+
+  .brand {
+    font-size: 0.95rem;
+    font-weight: 760;
+  }
+
+  .nav-links,
+  .language-switcher {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(14px, 3vw, 28px);
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  .nav-links a:hover,
+  .language-switcher a:hover,
+  .language-switcher a[aria-current="page"] {
+    color: var(--ink);
+  }
+
+  .language-switcher {
+    justify-content: flex-end;
+    padding-top: 8px;
+  }
+
+  .language-switcher a[aria-current="page"] {
+    border-bottom: 1px solid var(--cyan);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(420px, 1.08fr);
+    gap: clamp(36px, 7vw, 88px);
+    align-items: center;
+    padding-top: clamp(44px, 8vh, 92px);
+  }
+
+  .hero-copy {
+    max-width: 620px;
+    animation: copy-rise 720ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  .eyebrow,
+  .section-kicker {
+    color: var(--amber);
+    font-size: 0.78rem;
+    font-weight: 760;
+    letter-spacing: 0;
+    margin: 0 0 16px;
+    text-transform: uppercase;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    margin-top: 0;
+  }
+
+  h1 {
+    font-size: clamp(3.4rem, 8.2vw, 7.8rem);
+    line-height: 0.92;
+    max-width: 760px;
+    margin-bottom: 24px;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 4vw, 4rem);
+    line-height: 1;
+    margin-bottom: 18px;
+  }
+
+  h3 {
+    font-size: 1.08rem;
+    margin-bottom: 12px;
+  }
+
+  .hero-lede {
+    color: var(--muted);
+    font-size: clamp(1.08rem, 2vw, 1.35rem);
+    line-height: 1.55;
+    max-width: 670px;
+    margin-bottom: 22px;
+  }
+
+  .language-strip {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    margin-bottom: 32px;
+  }
+
+  .language-strip > span {
+    color: var(--cyan);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-size: 0.82rem;
+  }
+
+  .language-strip ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .language-strip li {
+    background: rgba(247, 240, 223, 0.055);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink);
+    font-size: 0.82rem;
+    font-weight: 680;
+    line-height: 1;
+    padding: 8px 10px;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .button {
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    display: inline-flex;
+    font-size: 0.95rem;
+    font-weight: 740;
+    min-height: 44px;
+    padding: 0 18px;
+    transition:
+      border-color 180ms ease,
+      transform 180ms ease,
+      background-color 180ms ease;
+  }
+
+  .button:hover {
+    transform: translateY(-2px);
+  }
+
+  .button.primary {
+    background: var(--ink);
+    color: #151713;
+  }
+
+  .button.secondary {
+    background: rgba(247, 240, 223, 0.06);
+    color: var(--ink);
+  }
+
+  .conversion-scene {
+    display: grid;
+    gap: 18px;
+    position: relative;
+  }
+
+  .terminal-panel {
+    background: var(--panel-strong);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+    overflow: hidden;
+    will-change: opacity, transform;
+  }
+
+  .session-panel {
+    animation: panel-rise 760ms cubic-bezier(0.2, 0.8, 0.2, 1) 180ms both;
+    transform: translateX(-24px);
+  }
+
+  .patch-panel {
+    animation: panel-rise 760ms cubic-bezier(0.2, 0.8, 0.2, 1) 780ms both;
+    transform: translateX(28px);
+  }
+
+  .panel-header {
+    align-items: center;
+    background: rgba(247, 240, 223, 0.055);
+    border-bottom: 1px solid var(--line);
+    color: var(--muted);
+    display: flex;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-size: 0.78rem;
+    justify-content: space-between;
+    padding: 11px 14px;
+  }
+
+  pre {
+    margin: 0;
+    overflow-x: auto;
+    padding: clamp(16px, 2.5vw, 24px);
+  }
+
+  code {
+    color: var(--ink);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-size: clamp(0.82rem, 1.3vw, 0.98rem);
+    line-height: 1.65;
+    white-space: pre;
+  }
+
+  .patch-panel code {
+    color: var(--moss);
+  }
+
+  .status-token {
+    background: rgba(121, 217, 207, 0.12);
+    border: 1px solid rgba(121, 217, 207, 0.28);
+    border-radius: 999px;
+    color: var(--cyan);
+    display: inline-block;
+    margin: 2px 0;
+    padding: 1px 8px;
+  }
+
+  .cursor {
+    animation: cursor-blink 1s steps(2, end) infinite;
+    background: var(--amber);
+    display: inline-block;
+    height: 1em;
+    margin-left: 5px;
+    transform: translateY(2px);
+    width: 7px;
+  }
+
+  .patch-line {
+    animation: rule-reveal 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    display: block;
+  }
+
+  .patch-line:nth-child(2) {
+    animation-delay: 1160ms;
+  }
+
+  .patch-line:nth-child(3) {
+    animation-delay: 1380ms;
+  }
+
+  .flow-line {
+    height: 30px;
+    position: relative;
+  }
+
+  .flow-line span {
+    animation: flow-scan 1800ms ease-in-out 560ms both;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    display: block;
+    height: 1px;
+    margin: 15px auto 0;
+    width: 70%;
+  }
+
+  .problem-section,
+  .steps-section,
+  .examples-section,
+  .install-section,
+  .closing-section {
+    padding: clamp(72px, 10vw, 128px) clamp(18px, 4vw, 56px);
+  }
+
+  .problem-section {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(280px, 0.75fr);
+    gap: clamp(24px, 6vw, 88px);
+    border-top: 1px solid var(--line);
+  }
+
+  .problem-section p,
+  .install-heading p,
+  .closing-section p {
+    color: var(--muted);
+    font-size: 1.06rem;
+    line-height: 1.7;
+  }
+
+  .step-grid,
+  .install-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 32px;
+  }
+
+  .step-grid article,
+  .install-grid article,
+  .example-list article {
+    animation: card-enter 640ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    background: rgba(247, 240, 223, 0.045);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+
+  .step-grid article:nth-child(2),
+  .install-grid article:nth-child(2),
+  .example-list article:nth-child(2) {
+    animation-delay: 90ms;
+  }
+
+  .step-grid article:nth-child(3),
+  .install-grid article:nth-child(3),
+  .example-list article:nth-child(3) {
+    animation-delay: 180ms;
+  }
+
+  .install-grid article:nth-child(4) {
+    animation-delay: 270ms;
+  }
+
+  .step-grid article {
+    padding: 24px;
+  }
+
+  .step-number {
+    color: var(--cyan);
+    display: block;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-size: 0.85rem;
+    margin-bottom: 26px;
+  }
+
+  .step-grid p,
+  .example-list p,
+  .install-grid p {
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 0;
+  }
+
+  .example-list {
+    display: grid;
+    gap: 14px;
+    margin-top: 32px;
+  }
+
+  .example-list article {
+    align-items: center;
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(320px, 1fr);
+    gap: 20px;
+    padding: 18px;
+  }
+
+  .example-list span {
+    color: var(--amber);
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 760;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .example-list pre,
+  .install-grid pre {
+    background: rgba(13, 15, 13, 0.66);
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    overflow: hidden;
+  }
+
+  .example-list code,
+  .install-grid code {
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+  }
+
+  .install-heading {
+    max-width: 700px;
+  }
+
+  .install-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .install-grid article {
+    padding: 18px;
+  }
+
+  .install-grid h3 {
+    min-height: 2.4em;
+  }
+
+  .install-grid pre {
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+
+  .install-grid code {
+    font-size: 0.76rem;
+    line-height: 1.5;
+  }
+
+  .closing-section {
+    border-top: 1px solid var(--line);
+    padding-bottom: 120px;
+  }
+
+  .closing-section p {
+    max-width: 680px;
+  }
+
+  @keyframes copy-rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes panel-rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 22px, 0) scale(0.985);
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes flow-scan {
+    from {
+      opacity: 0;
+      transform: scaleX(0.2);
+    }
+
+    45% {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0.9;
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes rule-reveal {
+    from {
+      opacity: 0;
+      transform: translateX(-12px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes card-enter {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes cursor-blink {
+    0%,
+    45% {
+      opacity: 1;
+    }
+
+    46%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 980px) {
+    .hero-grid,
+    .problem-section,
+    .example-list article {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-grid {
+      padding-top: 44px;
+    }
+
+    .conversion-scene {
+      margin-top: 10px;
+    }
+
+    .session-panel,
+    .patch-panel {
+      animation-name: panel-rise;
+      transform: none;
+    }
+
+    .step-grid,
+    .install-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      min-height: auto;
+      padding-bottom: 42px;
+    }
+
+    .topbar {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .nav-links,
+    .language-switcher {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    h1 {
+      font-size: clamp(3rem, 18vw, 4.5rem);
+    }
+
+    .step-grid,
+    .install-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .problem-section,
+    .steps-section,
+    .examples-section,
+    .install-section,
+    .closing-section {
+      padding-left: 18px;
+      padding-right: 18px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      scroll-behavior: auto !important;
+      transition: none !important;
+    }
+  }
+</style>

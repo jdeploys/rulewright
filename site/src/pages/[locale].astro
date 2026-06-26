@@ -1,0 +1,20 @@
+---
+import LandingPage from '../components/LandingPage.astro';
+import { landingContent } from '../data/landing-content.js';
+
+export function getStaticPaths() {
+  return Object.keys(landingContent)
+    .filter((locale) => locale !== 'en')
+    .map((locale) => ({
+      params: { locale },
+      props: {
+        content: landingContent[locale],
+        currentLocale: locale,
+      },
+    }));
+}
+
+const { content, currentLocale } = Astro.props;
+---
+
+<LandingPage content={content} currentLocale={currentLocale} />
